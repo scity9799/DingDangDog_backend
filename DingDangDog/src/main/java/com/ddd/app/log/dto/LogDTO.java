@@ -17,7 +17,7 @@ public class LogDTO {
 	}
 
 	public LogDTO(int logNumber, int userNumber, String logTitle, String logPost, Date logDate, Date logModifyDate,
-			String userNickname, String representativeImgPath, int commentCount) {
+			String userNickname, String representativeImgPath) {
 		this.logNumber = logNumber;
 		this.userNumber = userNumber;
 		this.logTitle = logTitle;
@@ -26,7 +26,6 @@ public class LogDTO {
 		this.logModifyDate = logModifyDate;
 		this.userNickname = userNickname;
 		this.representativeImgPath = representativeImgPath;
-		this.commentCount = commentCount;
 	}
 
 	public int getLogNumber() {
@@ -91,14 +90,6 @@ public class LogDTO {
 
 	public void setRepresentativeImgPath(String representativeImgPath) {
 		this.representativeImgPath = representativeImgPath;
-	}
-
-	public int getCommentCount() {
-		return commentCount;
-	}
-
-	public void setCommentCount(int commentCount) {
-		this.commentCount = commentCount;
 	}
 
 	@Override
