@@ -1,93 +1,147 @@
-document.addEventListener("DOMContentLoaded", function () {
+const imageUpload = document.getElementById("imageUpload");
+const thumbnailPreview = document.getElementById("thumbnailPreview");
+const writeContentEditor = document.getElementById("writeContentEditor");
+const imgPlaceholder = document.querySelector(".img-placeholder");
+const titleInput = document.querySelector(".write-title input");
+const btnSave = document.querySelector(".btn-save");
 
-  const cards = Array.from(document.querySelectorAll(".doglog-card"));
-  const cardsPerPage = 20;   // 한 페이지 카드 수
-  const pageCount = 5;       // 페이지 버튼 개수
+let uploadedImages = [];
 
-  let currentPage = 1;
-  let filteredCards = [...cards];
+if (!imageUpload || !thumbnailPreview || !writeContentEditor || !imgPlaceholder || !titleInput || !btnSave) {
+  throw new Error("필요한 요소를 찾을 수 없습니다.");
+}
 
-  const pageList = document.querySelector(".page-list");
-  const prevBtn = document.querySelector(".prev-btn");
-  const nextBtn = document.querySelector(".next-btn");
-  const searchBtn = document.querySelector(".btn-search");
-  const searchInput = document.querySelector(".search-input");
-  const searchSelect = document.querySelector(".search-select");
+imageUpload.addEventListener("change", handleImageUpload);
+writeContentEditor.addEventListener("click", handleEditorClick);
+btnSave.addEventListener("click", handleSubmit);
 
-  function renderPage(page){
-    cards.forEach(card => card.style.display = "none");
-    const start = (page - 1) * cardsPerPage;
-    const end = start + cardsPerPage;
-    filteredCards.slice(start, end).forEach(card => {
-      card.style.display = "block";
-    });
+function handleImageUpload(event) {
+  const files = Array.from(event.target.files || []);
+  const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+
+  if (!imageFiles.length) {
+    alert("이미지 파일만 첨부할 수 있습니다.");
+    imageUpload.value = "";
+    return;
   }
 
-  function createPagination(){
+  let loadedCount = 0;
 
-    const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-    const pageGroup = Math.ceil(currentPage / pageCount);
-    const startPage = (pageGroup - 1) * pageCount + 1;
-    const endPage = Math.min(startPage + pageCount - 1, totalPages);
-    const oldBtns = document.querySelectorAll(".page-item");
-    oldBtns.forEach(btn => btn.parentElement.remove());
+  imageFiles.forEach((file) => {
+    const reader = new FileReader();
 
-    for(let i = startPage; i <= endPage; i++){
-
-      const li = document.createElement("li");
-      const btn = document.createElement("button");
-      btn.className = "page-item";
-      btn.textContent = i;
-
-      if(i === currentPage){
-        btn.classList.add("current-page");
-      }
-
-      btn.addEventListener("click", () => {
-        currentPage = i;
-        renderPage(currentPage);
-        createPagination();
+    reader.onload = (e) => {
+      uploadedImages.push({
+        id: Date.now() + Math.random(),
+        src: e.target.result
       });
-      li.appendChild(btn);
-      pageList.insertBefore(li, nextBtn.parentElement);
-    }
+
+      loadedCount += 1;
+
+      if (loadedCount === imageFiles.length) {
+        renderThumbnail();
+        appendImagesToEditor(imageFiles.length);
+      }
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  imageUpload.value = "";
+}
+
+function appendImagesToEditor(newImageCount) {
+  const newImages = uploadedImages.slice(-newImageCount);
+
+  newImages.forEach((image) => {
+    const wrapper = createImageWrapper(image);
+    writeContentEditor.appendChild(wrapper);
+    writeContentEditor.appendChild(document.createElement("br"));
+  });
+}
+
+function createImageWrapper(image) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "editor-image-item";
+  wrapper.dataset.imageId = image.id;
+  wrapper.contentEditable = "false";
+
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.className = "btn-editor-image-delete";
+  deleteButton.dataset.action = "delete-image";
+  deleteButton.textContent = "×";
+
+  const img = document.createElement("img");
+  img.src = image.src;
+  img.alt = "첨부 이미지";
+
+  wrapper.appendChild(deleteButton);
+  wrapper.appendChild(img);
+
+  return wrapper;
+}
+
+function handleEditorClick(event) {
+  const deleteButton = event.target.closest('[data-action="delete-image"]');
+  if (!deleteButton) return;
+
+  const imageItem = deleteButton.closest(".editor-image-item");
+  if (!imageItem) return;
+
+  const imageId = Number(imageItem.dataset.imageId);
+  removeImage(imageId, imageItem);
+}
+
+function removeImage(imageId, imageElement) {
+  uploadedImages = uploadedImages.filter((image) => image.id !== imageId);
+
+  const nextNode = imageElement.nextSibling;
+  imageElement.remove();
+
+  if (nextNode && nextNode.nodeName === "BR") {
+    nextNode.remove();
   }
 
-  prevBtn.addEventListener("click", () => {
+  renderThumbnail();
+}
 
-    if(currentPage > 1){
-      currentPage--;
-      renderPage(currentPage);
-      createPagination();
-    }
-  });
+function renderThumbnail() {
+  if (!uploadedImages.length) {
+    thumbnailPreview.src = "";
+    thumbnailPreview.style.display = "none";
+    imgPlaceholder.style.display = "block";
+    return;
+  }
 
-  nextBtn.addEventListener("click", () => {
-    const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
-    if(currentPage < totalPages){
-      currentPage++;
-      renderPage(currentPage);
-      createPagination();
-    }
-  });
+  thumbnailPreview.src = uploadedImages[0].src;
+  thumbnailPreview.style.display = "block";
+  imgPlaceholder.style.display = "none";
+}
 
-  searchBtn.addEventListener("click", () =>{
-    const keyword = searchInput.value.trim();
-    const type = searchSelect.value;
-    filteredCards = cards.filter(card => {
+function handleSubmit(event) {
+  event.preventDefault();
 
-      const writer = card.querySelector(".doglog-writer").textContent;
-      const title = card.querySelector(".doglog-post-title").textContent;
-      
-      if (type === "작성자명") return writer.includes(keyword);
-      if (type === "제목") return title.includes(keyword);
-      return true;
-    });
+  const titleValue = titleInput.value.trim();
 
-    currentPage = 1;
-    renderPage(currentPage);
-    createPagination();
-  });
-  renderPage(currentPage);
-  createPagination();
-});
+  if (!uploadedImages.length) {
+    alert("이미지는 최소 1장 이상 첨부해야 합니다.");
+    return;
+  }
+
+  if (!titleValue) {
+    alert("제목을 입력해주세요.");
+    titleInput.focus();
+    return;
+  }
+
+  const submitData = {
+    title: titleValue,
+    thumbnail: uploadedImages[0]?.src || "",
+    content: writeContentEditor.innerHTML,
+    imageCount: uploadedImages.length
+  };
+
+  console.log("등록 데이터", submitData);
+  alert("저장 가능 상태입니다.");
+}
