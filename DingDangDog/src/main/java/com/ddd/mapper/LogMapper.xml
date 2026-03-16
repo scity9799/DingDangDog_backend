@@ -216,7 +216,7 @@
 	<!-- 이미지 등록 -->
 	<insert id="insertImage" parameterType="LogImgDTO">
 		INSERT INTO ddd_log_img (
-			log_img_number,
+			log_img_number,	
 			log_number,
 			log_img_path
 		) VALUES (
