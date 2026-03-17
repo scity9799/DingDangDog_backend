@@ -45,6 +45,7 @@ WHERE care_number = #{careNumber} AND user_number = #{userNumber}
 
 <!-- 멍! 케어 신청 -->
 <insert id="applyCare" parameterType="CareApplyDTO">
+<![CDATA[
 INSERT INTO ddd_care_apply(apply_number, care_number, user_number, apply_date)
 SELECT SEQ_CARE_APPLY.NEXTVAL, #{careNumber}, #{userNumber}, SYSDATE
 FROM DDD_CARE c
@@ -53,6 +54,7 @@ AND (SELECT COUNT(*)
      FROM ddd_care_apply
      WHERE care_number = c.care_number) < c.care_recruit
 AND c.care_status = 'open'
+]]>
 </insert>
 
 <!-- 멍! 케어 자동 마감 -->
@@ -73,10 +75,12 @@ WHERE care_number = #{careNumber} AND user_number = #{userNumber}
 
 <!-- 재오픈 -->
 <update id="reopenCare" parameterType="int">
+<![CDATA[
 UPDATE DDD_CARE c
 SET c.care_status = 'open'
 WHERE c.care_number = #{careNumber}
 AND (SELECT COUNT(*) FROM ddd_care_apply a WHERE a.care_number = c.care_number) < c.care_recruit;
+]]>
 </update>
 
 <!-- 신청회원 목록 조회-->
