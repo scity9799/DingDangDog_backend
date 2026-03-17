@@ -34,9 +34,9 @@
             enctype="multipart/form-data"
             id="doglogEditForm">
 
-        <input type="hidden" name="logNumber" value="${log.logNumber}">
-        <input type="hidden" name="deleteImageIds" id="deleteImageIds">
-        <input type="hidden" name="logPost" id="logPostHidden">
+        <input type="hidden" name="logNumber" value="${log.logNumber}" />
+        <input type="hidden" name="deleteImageIds" id="deleteImageIds" />
+        <input type="hidden" name="logPost" id="logPostHidden" />
 
         <div class="container-body">
           <div class="doglog-detail-container">
@@ -69,38 +69,48 @@
               </div>
             </div>
 
-            <!-- 본문 -->
             <div class="detail-main-container">
 
-              <!-- 이미지 -->
+              <!-- 이미지 영역 -->
               <div class="detail-main-img">
                 <div class="img-preview-box">
                   <img id="editPreviewImg"
                        src="${not empty firstImagePath ? pageContext.request.contextPath.concat(firstImagePath) : ''}"
                        alt="대표 이미지 미리보기"
-                       style="${not empty firstImagePath ? 'display:block;' : 'display:none;'}">
+                       style="${not empty firstImagePath ? 'display:block;' : 'display:none;'}" />
                   <span class="img-placeholder"
                         style="${not empty firstImagePath ? 'display:none;' : 'display:block;'}">
                     대표 이미지
                   </span>
                 </div>
 
-                <input type="file" id="editImg" name="logImages" accept="image/*" multiple />
+                <input type="file"
+                       id="editImg"
+                       name="logImages"
+                       accept="image/*"
+                       multiple />
 
                 <!-- 기존 이미지 목록 -->
                 <div class="existing-image-list" id="existingImageList">
-                  <c:if test="${not empty imageList}">
-                    <c:forEach var="image" items="${imageList}">
-                      <div class="existing-image-item"
-                           data-image-id="${image.logImgNumber}"
-                           data-image-path="${image.logImgPath}">
-                        <img src="${pageContext.request.contextPath}${image.logImgPath}" alt="기존 이미지">
-                        <button type="button"
-                                class="btn-existing-image-delete"
-                                data-action="delete-existing-image">×</button>
-                      </div>
-                    </c:forEach>
-                  </c:if>
+                  <c:choose>
+                    <c:when test="${not empty imageList}">
+                      <c:forEach var="image" items="${imageList}">
+                        <div class="existing-image-item"
+                             data-image-id="${image.logImgNumber}"
+                             data-image-path="${image.logImgPath}">
+                          <img src="${pageContext.request.contextPath}${image.logImgPath}" alt="기존 이미지" />
+                          <button type="button"
+                                  class="btn-existing-image-delete"
+                                  data-action="delete-existing-image">
+                            ×
+                          </button>
+                        </div>
+                      </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                      <!-- 기존 이미지 없을 때 비워둠 -->
+                    </c:otherwise>
+                  </c:choose>
                 </div>
               </div>
 
@@ -119,8 +129,11 @@
             <div class="btn-left">
               <a href="${pageContext.request.contextPath}/log/detail.lo?logNumber=${log.logNumber}"
                  class="btn btn-backlist"
-                 id="btnBackToDetail">취소</a>
+                 id="btnBackToDetail">
+                취소
+              </a>
             </div>
+
             <div class="btn-right">
               <button type="submit" class="btn btn-edit-save" id="btnEditSave">
                 수정 완료
