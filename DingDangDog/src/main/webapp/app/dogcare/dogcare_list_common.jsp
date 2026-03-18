@@ -67,7 +67,7 @@
         <div class="search-box">
           <select name="type" class="search-select box-shadow">
             <option value="shelter">보호소명</option>
-            <option value="date">봉사날짜</option>
+            <option value="title">제목</option>
           </select>
           <input type="text" name="keyword" class="search-input box-shadow" />
           <button class="btn-search box-shadow">
