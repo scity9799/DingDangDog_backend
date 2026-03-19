@@ -38,6 +38,7 @@ public class InquiryListOkController implements Execute {
 		List<InquiryListDTO> inquiryList = inquiryDAO.selectAll(pageMap);
 		// DAO에서 select all 메서드 호출 -> 게시글 전체 조회 
 		request.setAttribute("inquiryList", inquiryList);
+		return result;
 
 		
 		

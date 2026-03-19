@@ -2,7 +2,6 @@ package com.ddd.app.inquiry.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,6 @@ import com.ddd.app.Result;
 /**
  * Servlet implementation class inquiryFrontController
  */
-//@WebServlet("/inquiryFrontController")
 public class InquiryFrontController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,7 +41,7 @@ public class InquiryFrontController extends HttpServlet {
 	protected void doProcess(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String target = request.getRequestURI().substring(request.getContextPath().length());
-		System.out.println("BoardFrontController 현재 경로 : " + target);
+		System.out.println("InquiryFrontController 현재 경로 : " + target);
 		Result result = new Result();
 		
 		
@@ -59,17 +57,17 @@ public class InquiryFrontController extends HttpServlet {
 			System.out.println("문의 상세 페이지 이동 완료");
 			break;
 			
-		case "/inquiry/write.in":
+		case "/inquiry/inquiryWrite.in":
 			System.out.println("문의 작성 페이지 이동 요청");
 			result = new InquiryWriteController().execute(request,response);
 			System.out.println("문의 작성 페이지 이동 완료");
 			break;
 			
-		case "/inquiry/writeOk.in":
+		case "/inquiry/inquiryWriteOk.in":
 			System.out.println("문의 작성 등록 요청");
 			result = new InquiryWriteOkController().execute(request,response);
 			System.out.println("문의 작성 등록 완료");
-			
+			break;
 		case "/inquiry/inquiryDeleteOk.in":
 			System.out.println("문의 삭제 요청");
 			result = new InquiryDeleteOkController().execute(request,response);
@@ -80,7 +78,7 @@ public class InquiryFrontController extends HttpServlet {
 			System.out.println("문의 답변 상태 요청");
 			result = new InquiryAnswerOkController().execute(request,response);
 			System.out.println("문의 답변 완료");
-		
+			break;
 		
 	}
 		if(result != null && result.getPath() != null) {
