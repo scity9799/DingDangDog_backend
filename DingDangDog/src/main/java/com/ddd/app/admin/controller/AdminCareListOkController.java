@@ -13,14 +13,14 @@ import com.ddd.app.Execute;
 import com.ddd.app.Result;
 import com.ddd.app.admin.dao.AdminDAO;
 import com.ddd.app.admin.dto.AdminCareDTO;
-import com.ddd.app.dogcare.dto.CareListDTO;
+
 
 public class AdminCareListOkController implements Execute {
 	@Override
 	public Result execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		System.out.println("=== AdminCareListController 실행 ===");
-		AdminCareDTO admincareDTO = new AdminCareDTO();
+		
 		AdminDAO adminDAO = new AdminDAO();
 		Result result = new Result();
 		
@@ -40,12 +40,12 @@ public class AdminCareListOkController implements Execute {
 		pageMap.put("endRow", endRow);
 		System.out.println("페이징 확인 : " + pageMap);
 
-		List<CareListDTO> careList = AdminDAO.selectCareList(pageMap);
+		List<AdminCareDTO> careList = adminDAO.selectCareList(pageMap);
 		request.setAttribute("careList", careList);
 
 		// 페이징 정보 설정
 		// 실제 마지막 페이지 번호(realEndPage)를 계산함
-		int total = AdminDAO.getTotal();
+		int total = adminDAO.getCareTotal();
 		// 실제 마지막 페이지(전체 게시글 기준으로 계산)
 		int realEndPage = (int) (Math.ceil(total / (double) rowCount));
 		// 현재 페이지 그룹에서의 마지막 페이지

@@ -120,8 +120,14 @@ public class AdminDAO {
 
 	// 멍! 케어 전체 목록 조회
     public List<AdminCareDTO> selectCareList(Map<String, Integer> pageMap){
-    	System.out.println("멍케어 전체 리스트 조");    	
+    	System.out.println("멍케어 전체 리스트 조회");    	
         return sqlSession.selectList("adminCare.selectCareList", pageMap);
+    }
+    
+    // 멍! 케어 게시글 총 개수
+    public int getCareTotal() {
+        System.out.println("멍! 케어 게시글 총 개수 조회 - getCareTotal 실행");
+        return sqlSession.selectOne("adminCare.getCareTotal");
     }
 
     // 멍! 케어 검색
