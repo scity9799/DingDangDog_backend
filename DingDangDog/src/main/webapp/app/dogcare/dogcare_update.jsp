@@ -47,7 +47,7 @@
                             <div class="dogcare-date">
                                 <label>일정</label>
                                 <input type="date" name="careDate"
-                                    value="${care.careDate.toLocalDate()}" required />
+                                    value="${care.careDate}" required />
                             </div>
 
                         </div>
