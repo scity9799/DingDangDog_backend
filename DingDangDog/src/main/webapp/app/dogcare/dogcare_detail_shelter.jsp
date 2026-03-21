@@ -20,7 +20,7 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/footer.css" />
 <script defer
-	src="${pageContext.request.contextPath}/assets/js/dogcare/dogcare_detail.js"></script>
+	src="${pageContext.request.contextPath}/assets/js/dogcare/dogcare_detail_shelter.js"></script>
 
 </head>
 
@@ -59,9 +59,11 @@
 				onclick="location.href='${pageContext.request.contextPath}/care/list.ca'">
 				목록으로</button>
 			<div class="footer-right">
-				<div class="apply-status" id="applyStatusBtn">
+
+				<button type="button" class="apply-status" id="applyStatusBtn">
 					신청 현황 <span id="applyCount">${care.applyStatus}</span>
-				</div>
+				</button>
+
 				<!-- 중복 신청 시 메시지를 alert 창으로 표시 -->
 				<c:if test="${not empty alertMessage}">
 					<script type="text/javascript">
@@ -70,10 +72,11 @@
 				</c:if>
 
 				<!-- 세션 구분해서 사용자별로 보이는 버튼 다르게 -->
-				<c:if test="${sessionScope.userType == 'C'}">
+				<c:if
+					test="${sessionScope.userType == 'C' || sessionScope.userNumber == null}">
 					<form>
 						<button type="button" class="btn-list" id="applyBtn"
-							onclick="location.href='${pageContext.request.contextPath}/care/apply.ca?careNumber=${care.careNumber}&userNumber=${sessionScope.userNumber}'">
+							onclick="location.href='${pageContext.request.contextPath}/care/apply.ca?careNumber=${care.careNumber}'">
 							신청</button>
 					</form>
 				</c:if>
@@ -101,12 +104,12 @@
 	<!-- footer -->
 	<jsp:include page="/app/footer.jsp" />
 	<!-- js -->
-	<script src="/assets/js/header-footer.js"></script>
-
+	<!-- <script src="/assets/js/header-footer.js"></script>
+ -->
 	<!-- 신고 모달창 -->
 	<!-- 신청자 목록을 세션 값에 따라 표시 -->
 	<c:if
-		test="${sessionScope.userNumber != null && sessionScope.userNumber == careList.userNumber}">
+		test="${sessionScope.userNumber != null && sessionScope.userNumber == care.userNumber}">
 		<div id="applyModal" class="modal">
 
 			<div class="modal-content">
