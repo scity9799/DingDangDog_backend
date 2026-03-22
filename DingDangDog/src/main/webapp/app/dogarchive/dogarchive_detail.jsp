@@ -8,14 +8,25 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/header.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/footer.css" />
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/assets/css/dogarchive/dogarchive_detail.css" />
 <script defer src="${pageContext.request.contextPath}/assets/js/dogarchive/dogarchive_detail.js"></script>
 <title>멍! 카이브 상세</title>
 </head>
 
 <body>
-	<!-- header -->
-	<div id="header-container"></div>
+	<!-- 유저 번호 확인 존재시 로그인 헤더 -->
+	<c:choose>
+		<c:when test="${not empty sessionScope.userNumber}">
+			<jsp:include page="/app/header_login.jsp" />
+		</c:when>
+		<c:otherwise>
+			<jsp:include page="/app/header_logout.jsp" />
+		</c:otherwise>
+	</c:choose>
 
 	<main class="archive-detail">
 		<div class="container">
@@ -122,7 +133,7 @@
 		</div>
 	</main>
 	<!-- footer -->
-	<div id="footer-container"></div>
+	<jsp:include page="/app/footer.jsp" />
 	<!-- js -->
 	<script src="/assets/js/header-footer.js"></script>
 </body>
