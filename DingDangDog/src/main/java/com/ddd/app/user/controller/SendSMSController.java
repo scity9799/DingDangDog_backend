@@ -22,7 +22,7 @@ public class SendSMSController implements Execute {
 		String phoneNumber = request.getParameter("realPhoneNumber");
 		SmsService smsService = new SmsService();
 		Result result = new Result();
-
+		System.out.println(phoneNumber);
 		try {
 			System.out.println("===인증코드====");
 			// SMS 전송 및 인증 코드 생성

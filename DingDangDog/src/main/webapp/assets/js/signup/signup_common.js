@@ -294,8 +294,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		fetch(`${base}/user/sendSMS.us?realPhoneNumber=${realPhoneNumber}`, {
 			//fetch(`${base}/user/sendSMS.us`, {
 			method: "POST",
-			headers: { "Content-Type": "application/json; charset=utf-8", "Accept": "application/json"/*, "X-Requested-With": "XMLHttpRequest" */ },
-			body: JSON.stringify({ realPhoneNumber })
+			headers: { "Content-Type": "application/json; charset=utf-8", "Accept": "application/json"/*, "X-Requested-With": "XMLHttpRequest"*/ },
+			/*body: JSON.stringify({ realPhoneNumber })*/
 		})
 			.then(r => {
 				if (!r.ok) throw new Error(r.status);
