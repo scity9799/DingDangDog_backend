@@ -16,7 +16,7 @@
     <nav class="h-centent-menu">
       <ul>
         <li><a href="#" class="h-centent-menu-item">소개</a></li>
-        <li><a href="${pageContext.request.contextPath}/matching/test.matching" class="h-centent-menu-item">멍! 매칭</a></li>
+        <li><a href="${pageContext.request.contextPath}/matching/test.ma" class="h-centent-menu-item">멍! 매칭</a></li>
         <li><a href="${pageContext.request.contextPath}/log/list.lo" class="h-centent-menu-item">멍! 로그</a></li>
         <li><a href="${pageContext.request.contextPath}/care/list.ca" class="h-centent-menu-item">멍! 케어</a></li>
         <li><a href="${pageContext.request.contextPath}/archive/list.ar" class="h-centent-menu-item">멍! 카이브</a></li>
@@ -29,7 +29,7 @@
           <img src="${pageContext.request.contextPath}/assets/img/1.png" alt="user-icon" class="h-user-section-img">
           <div class="h-user-text-stack">
             <span class="h-user-nickname">${sessionScope.userNickname}</span>
-            <a href="${pageContext.request.contextPath}/mypage/main.mp" class="h-mypage-btn">마이페이지</a>
+            <a href="${pageContext.request.contextPath}/mypage/mypageMain.mp" class="h-mypage-btn">마이페이지</a>
           </div>
         </div>
         <a href="${pageContext.request.contextPath}/header/logoutOk.he" class="h-logout-btn">로그아웃</a>
